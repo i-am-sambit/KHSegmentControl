@@ -14,6 +14,7 @@
 		3683774820F9DD4700562182 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3683774620F9DD4700562182 /* LaunchScreen.storyboard */; };
 		3683775320F9DD4700562182 /* KHSegmentControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3683775220F9DD4700562182 /* KHSegmentControlTests.swift */; };
 		3683775E20F9DD4700562182 /* KHSegmentControlUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3683775D20F9DD4700562182 /* KHSegmentControlUITests.swift */; };
+		3683776C20F9DD9100562182 /* KHSegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3683776B20F9DD9100562182 /* KHSegmentControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		3683775920F9DD4700562182 /* KHSegmentControlUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KHSegmentControlUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3683775D20F9DD4700562182 /* KHSegmentControlUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KHSegmentControlUITests.swift; sourceTree = "<group>"; };
 		3683775F20F9DD4700562182 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3683776B20F9DD9100562182 /* KHSegmentControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KHSegmentControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 			children = (
 				3683773D20F9DD4500562182 /* AppDelegate.swift */,
 				3683773F20F9DD4500562182 /* ViewController.swift */,
+				3683776B20F9DD9100562182 /* KHSegmentControl.swift */,
 				3683774120F9DD4500562182 /* Main.storyboard */,
 				3683774420F9DD4700562182 /* Assets.xcassets */,
 				3683774620F9DD4700562182 /* LaunchScreen.storyboard */,
@@ -256,6 +259,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3683776C20F9DD9100562182 /* KHSegmentControl.swift in Sources */,
 				3683774020F9DD4500562182 /* ViewController.swift in Sources */,
 				3683773E20F9DD4500562182 /* AppDelegate.swift in Sources */,
 			);
