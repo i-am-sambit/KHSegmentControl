@@ -42,15 +42,6 @@ import UIKit
     }
     
     /**
-     * Set Segment Images
-     **/
-    var segmentImages: [UIImage] = [] {
-        didSet{
-            updateUI()
-        }
-    }
-    
-    /**
      * Set selector view color
      * Default is light gray color
      **/
