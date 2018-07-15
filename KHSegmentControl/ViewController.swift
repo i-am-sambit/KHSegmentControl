@@ -43,7 +43,7 @@ class ViewController: UIViewController {
         segmentControl2.layer.masksToBounds = true
         
         segmentControl2.addTarget(self, action: #selector(segmentAction(_:)), for: .valueChanged)
-        view.addSubview(segmentControl2)
+//        view.addSubview(segmentControl2)
     }
     
     @objc func segmentAction (_ sender: KHSegmentControl) {
