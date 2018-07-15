@@ -9,9 +9,9 @@
 import Foundation
 import UIKit
 
-public class KHSegmentControl: UIControl {
+@IBDesignable public class KHSegmentControl: UIControl {
     
-    enum SelectorPosition {
+    enum SelectorPosition: Int {
         case up
         case down
         case circular
@@ -19,8 +19,17 @@ public class KHSegmentControl: UIControl {
     }
     
     private var segments: [UIButton] = [UIButton]()
+    
+    /**
+     * -- Selectore View --
+     * This will indicate the selected segment
+     **/
     private let selectorView: UIView = {
         return UIView()
+    }()
+    
+    let backgroundView: UIScrollView = {
+        return UIScrollView()
     }()
     
     /**
@@ -45,7 +54,7 @@ public class KHSegmentControl: UIControl {
      * Set selector view color
      * Default is light gray color
      **/
-    var selectorColor: UIColor = .black {
+    @IBInspectable var selectorColor: UIColor = .black {
         didSet{
             updateUI()
         }
@@ -55,7 +64,7 @@ public class KHSegmentControl: UIControl {
      * Set Segment Text color
      * Default is .black
      **/
-    var segmentTextColor: UIColor = .white {
+    @IBInspectable var segmentTextColor: UIColor = .white {
         didSet {
             updateUI()
         }
@@ -65,7 +74,7 @@ public class KHSegmentControl: UIControl {
      * Set Selected Segment Text color
      * Default is .white
      **/
-    var selectedSegmentTextColor: UIColor = .black {
+    @IBInspectable var selectedSegmentTextColor: UIColor = .black {
         didSet {
             updateUI()
         }
@@ -85,7 +94,7 @@ public class KHSegmentControl: UIControl {
      * Set Selector Position
      * Default is down
      **/
-    var selectorHeight: Int = 5 {
+    @IBInspectable var selectorHeight: Int = 5 {
         didSet {
             updateUI()
         }
@@ -103,16 +112,28 @@ public class KHSegmentControl: UIControl {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
+        updateUI()
     }
     
     //MARK: Update UI for KHSegment Control
     func updateUI() {
         
+        self.backgroundColor = .lightGray
+        
         // Remove all the subviews
         self.subviews.forEach { (view) in
             view.removeFromSuperview()
         }
+        
+        // Set Background View
+        backgroundView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height)
+        backgroundView.contentSize = CGSize(width: (Int(self.bounds.size.width/3) * segmentTitles.count), height: Int(self.bounds.size.height))
+        backgroundView.showsHorizontalScrollIndicator = false
+        backgroundView.isPagingEnabled = true
+        self.addSubview(backgroundView)
+        
+        backgroundView.isScrollEnabled = (segmentTitles.count <= 3 ? false : true)
         
         switch selectorPosition {
             
@@ -134,7 +155,7 @@ public class KHSegmentControl: UIControl {
             selectorView.backgroundColor = selectorColor.withAlphaComponent(0.5)
             break
         }
-        self.addSubview(selectorView)
+        backgroundView.addSubview(selectorView)
         
         for (index, item) in segmentTitles.enumerated() {
             
@@ -143,7 +164,7 @@ public class KHSegmentControl: UIControl {
             segment.tag = index
             segment.titleLabel?.font = UIFont(name: "HelveticaNeue-Regular", size: 25)
             segment.addTarget(self, action: #selector(segmentAction(_:)), for: .touchUpInside)
-            self.addSubview(segment)
+            backgroundView.addSubview(segment)
             
             index == selectedIndex ? segment.setTitleColor(selectedSegmentTextColor, for: .normal) : segment.setTitleColor(segmentTextColor, for: .normal)
             
@@ -156,22 +177,15 @@ public class KHSegmentControl: UIControl {
         selectedIndex = sender.tag
         
         UIView.animate(withDuration: 0.3) {
-            
-            switch self.selectorPosition {
-                
-            case .up:
-                self.selectorView.frame = CGRect(x: (self.selectedIndex*Int(self.bounds.size.width/3)), y: Int(self.selectorView.frame.origin.y), width: (Int(self.bounds.size.width)/3), height: self.selectorHeight)
-            case .down:
-                self.selectorView.frame = CGRect(x: (self.selectedIndex*Int(self.bounds.size.width/3)), y: Int(self.selectorView.frame.origin.y), width: (Int(self.bounds.size.width)/3), height: self.selectorHeight)
-            case .circular:
-                self.selectorView.frame = CGRect(x: (self.selectedIndex*Int(self.bounds.size.width/3)), y: Int(self.selectorView.frame.origin.y), width: (Int(self.bounds.size.width)/3), height: Int(self.bounds.size.height))
-            case .box:
-                self.selectorView.frame = CGRect(x: (self.selectedIndex*Int(self.bounds.size.width/3)), y: Int(self.selectorView.frame.origin.y), width: (Int(self.bounds.size.width)/3), height: Int(self.bounds.size.height))
-            }
+            self.selectorView.frame.origin.x = sender.frame.origin.x
         }
         
         for segment in segments {
             segment == sender ? segment.setTitleColor(selectedSegmentTextColor, for: .normal) : segment.setTitleColor(segmentTextColor, for: .normal)
+        }
+        
+        if (selectedIndex == (segmentTitles.count - 1)) {
+            centerCurrentView()
         }
         
         sendActions(for: .valueChanged)
@@ -181,5 +195,18 @@ public class KHSegmentControl: UIControl {
         super.sendActions(for: controlEvents)
     }
     
-    
+    private func centerCurrentView() {
+        let centerRect = CGRect(
+            origin: CGPoint(x: backgroundView.bounds.midX, y: 0),
+            size: CGSize(width: 0, height: bounds.height)
+        )
+        
+        guard let selectedIndex = segments.index(where: { $0.frame.intersects(centerRect) })
+            else { return }
+        let centralView = segments[selectedIndex]
+        let targetCenter = centralView.center
+        let targetOffsetX = targetCenter.x - (backgroundView.bounds.width / 2)
+        
+        backgroundView.setContentOffset(CGPoint(x: targetOffsetX, y: 0), animated: true)
+    }
 }
