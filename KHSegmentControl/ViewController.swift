@@ -29,6 +29,11 @@ class ViewController: UIViewController {
         segmentControl.layer.masksToBounds = true
         
         segmentControl.addTarget(self, action: #selector(segmentAction(_:)), for: .valueChanged)
+        
+        segmentControl.segmentChangeHandler = { selectedIndex in
+            print("Selected Index :  \(selectedIndex)")
+        }
+        
         view.addSubview(segmentControl)
     }
     

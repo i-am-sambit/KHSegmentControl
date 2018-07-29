@@ -53,7 +53,6 @@ import UIKit
         }
     }
     
-    
     /**
      * Set selector view color
      * Default is light gray color
@@ -112,7 +111,16 @@ import UIKit
     /**
      * Selected Index. Default is 0
      **/
-    var selectedIndex: Int = 0
+    var selectedIndex: Int = 0 {
+        willSet {
+            segmentChangeHandler?(newValue)
+        }
+    }
+    
+    /**
+      * Segment change Handler will be called when even selected index will be changed
+      **/
+    var segmentChangeHandler: ((_ index: Int) -> Void)?
     
     
     //MARK:
