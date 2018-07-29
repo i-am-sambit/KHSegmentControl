@@ -7,6 +7,7 @@
 - Supports Attributed text styling 
 - Supports Different Selection Styles [.up, .down, .circular, .box]
 - Supports ARC and iOS 10 or more
+- Supports closure
 
 # Installation #
 
@@ -30,4 +31,9 @@
         segmentControl.layer.masksToBounds = true
         
         segmentControl.addTarget(self, action: #selector(segmentAction(_:)), for: .valueChanged)
+        
+        segmentControl.segmentChangeHandler = { selectedIndex in
+            print("Selected Index :  \(selectedIndex)")
+        }
+        
         view.addSubview(segmentControl)
